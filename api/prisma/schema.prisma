@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum BookingStatus {
+  PENDING
+  ACCEPTED
+  REFUSED
+  CANCELLED
+  COMPLETED
+}
+
+enum UserRole {
+  CLIENT
+  ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  firstName     String
+  lastName      String
+  birthDate     DateTime
+  gender        Gender?
+  isVerified    Boolean   @default(false)
+  verificationCode String?
+  verificationCodeExpiresAt DateTime?
+  phoneNumber   String?
+  role          UserRole  @default(CLIENT)
+  pushToken     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  bookings      Booking[]
+
+  @@index([email])
+}
+
+model Service {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  price       Float
+  duration    Int       // in minutes
+  imageUrl    String?
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  bookings    Booking[]
+
+  @@index([isActive])
+}
+
+model Booking {
+  id                String        @id @default(uuid())
+  date              DateTime
+  status            BookingStatus @default(PENDING)
+  cancellationReason String?
+  notes             String?
+  userId            String
+  user              User          @relation(fields: [userId], references: [id])
+  serviceId         String
+  service           Service       @relation(fields: [serviceId], references: [id])
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([date, status])
+  @@index([userId])
+}

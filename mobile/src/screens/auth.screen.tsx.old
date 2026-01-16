@@ -1,0 +1,254 @@
+import React from 'react';
+import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Dimensions } from 'react-native';
+import { BlurView } from 'expo-blur';
+import { COLORS } from '@/constants/theme';
+import { Chrome as GoogleIcon, ChevronLeft } from 'lucide-react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useAuth } from '@/services/auth.context';
+import * as GoogleProvider from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
+import { useEffect } from 'react';
+
+WebBrowser.maybeCompleteAuthSession();
+
+const { width, height } = Dimensions.get('window');
+
+export const AuthScreen = ({ navigation }: any) => {
+    const { signInWithGoogle } = useAuth();
+
+    // NOTE: Ces IDs doivent être créés sur Google Cloud Console
+    // Et liés à votre projet Firebase.
+    // NOTE: Utilisation de l'ID Client Web pour obtenir un id_token compatible avec Firebase
+    // NOTE: Utilisation des Client IDs depuis le fichier .env (Meilleure pratique)
+    const [request, response, promptAsync] = GoogleProvider.useIdTokenAuthRequest({
+        clientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+        iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+        androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
+        redirectUri: 'https://auth.expo.io/@ghostesso/nailsbydivinegrace',
+    }, {
+        scheme: 'nailsbydivinegrace',
+    });
+
+    useEffect(() => {
+        if (response?.type === 'success') {
+            const { id_token } = response.params;
+            handleLoginSuccess(id_token);
+        }
+    }, [response]);
+
+    const handleLoginSuccess = async (idToken: string) => {
+        try {
+            await signInWithGoogle(idToken);
+            navigation.replace('ServiceList');
+        } catch (error) {
+            alert('Erreur lors de la validation avec le serveur');
+        }
+    };
+
+    const handleGoogleLogin = () => {
+        promptAsync();
+    };
+
+    return (
+        <View style={styles.container}>
+            <ImageBackground
+                source={require('../../assets/onboarding-bg.png')}
+                style={styles.backgroundImage}
+                resizeMode="cover"
+            >
+                <BlurView intensity={40} tint="light" style={StyleSheet.absoluteFill}>
+                    <LinearGradient
+                        colors={['rgba(255, 255, 255, 0.2)', 'rgba(255, 255, 255, 0.8)']}
+                        style={StyleSheet.absoluteFill}
+                    />
+                </BlurView>
+
+                <SafeAreaView style={styles.content}>
+                    <TouchableOpacity
+                        style={styles.backButton}
+                        onPress={() => navigation.goBack()}
+                    >
+                        <ChevronLeft size={24} color={COLORS.text} />
+                    </TouchableOpacity>
+
+                    <View style={styles.centerSection}>
+                        <View style={styles.logoBadge}>
+                            <Text style={styles.logoBadgeText}>NG</Text>
+                        </View>
+                        <Text style={styles.welcomeTitle}>Un moment pour vous</Text>
+                        <Text style={styles.welcomeSubtitle}>Connectez-vous pour commencer votre expérience beauté</Text>
+                    </View>
+
+                    <View style={styles.bottomSection}>
+                        <View style={styles.authCard}>
+                            <Text style={styles.authTitle}>Accès Client</Text>
+                            <Text style={styles.authDesc}>Pour gérer vos réservations en toute sécurité, utilisez votre compte Google.</Text>
+
+                            <TouchableOpacity
+                                style={styles.googleButton}
+                                onPress={handleGoogleLogin}
+                                activeOpacity={0.8}
+                            >
+                                <View style={styles.googleIconContainer}>
+                                    <View style={styles.googleIconCircle}>
+                                        <GoogleIcon size={20} color="#4285F4" fill="#4285F4" />
+                                    </View>
+                                </View>
+                                <Text style={styles.googleButtonText}>Continuer avec Google</Text>
+                            </TouchableOpacity>
+
+                            <Text style={styles.securityText}>
+                                <Text style={{ fontSize: 12 }}>🔒</Text> Connexion sécurisée via Google
+                            </Text>
+                        </View>
+
+                        <Text style={styles.footerText}>En continuant, vous acceptez nos conditions d'utilisation</Text>
+                    </View>
+                </SafeAreaView>
+            </ImageBackground>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    backgroundImage: {
+        width: width,
+        height: height,
+    },
+    content: {
+        flex: 1,
+        justifyContent: 'space-between',
+        paddingHorizontal: 24,
+    },
+    backButton: {
+        width: 44,
+        height: 44,
+        borderRadius: 22,
+        backgroundColor: COLORS.white,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+        elevation: 3,
+    },
+    centerSection: {
+        alignItems: 'center',
+        marginTop: -40,
+    },
+    logoBadge: {
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        backgroundColor: COLORS.primary,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 24,
+        shadowColor: COLORS.primary,
+        shadowOffset: { width: 0, height: 12 },
+        shadowOpacity: 0.3,
+        shadowRadius: 20,
+        elevation: 10,
+    },
+    logoBadgeText: {
+        color: COLORS.white,
+        fontSize: 32,
+        fontWeight: '900',
+        fontFamily: 'Urbanist-Bold',
+    },
+    welcomeTitle: {
+        fontSize: 28,
+        fontWeight: '800',
+        color: COLORS.text,
+        fontFamily: 'Urbanist-Bold',
+        textAlign: 'center',
+        marginBottom: 8,
+    },
+    welcomeSubtitle: {
+        fontSize: 16,
+        color: COLORS.textSecondary,
+        fontFamily: 'Urbanist-Medium',
+        textAlign: 'center',
+        paddingHorizontal: 30,
+        lineHeight: 22,
+    },
+    bottomSection: {
+        marginBottom: 30,
+    },
+    authCard: {
+        backgroundColor: COLORS.white,
+        borderRadius: 30,
+        padding: 30,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 20 },
+        shadowOpacity: 0.1,
+        shadowRadius: 30,
+        elevation: 15,
+    },
+    authTitle: {
+        fontSize: 22,
+        fontWeight: '800',
+        color: COLORS.text,
+        fontFamily: 'Urbanist-Bold',
+        marginBottom: 10,
+    },
+    authDesc: {
+        fontSize: 14,
+        color: COLORS.textSecondary,
+        fontFamily: 'Urbanist-Medium',
+        textAlign: 'center',
+        lineHeight: 20,
+        marginBottom: 30,
+    },
+    googleButton: {
+        width: '100%',
+        height: 60,
+        backgroundColor: '#F2F2F2',
+        borderRadius: 30,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: '#E0E0E0',
+    },
+    googleIconContainer: {
+        position: 'absolute',
+        left: 8,
+    },
+    googleIconCircle: {
+        width: 44,
+        height: 44,
+        borderRadius: 22,
+        backgroundColor: COLORS.white,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    googleButtonText: {
+        fontSize: 16,
+        fontWeight: '700',
+        color: COLORS.text,
+        fontFamily: 'Urbanist-Bold',
+    },
+    securityText: {
+        marginTop: 20,
+        fontSize: 12,
+        color: COLORS.textSecondary,
+        fontFamily: 'Urbanist-Medium',
+        opacity: 0.7,
+    },
+    footerText: {
+        textAlign: 'center',
+        marginTop: 24,
+        color: COLORS.textSecondary,
+        fontFamily: 'Urbanist-Medium',
+        fontSize: 12,
+        opacity: 0.6,
+    }
+});

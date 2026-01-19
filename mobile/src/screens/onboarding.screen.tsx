@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     },
     overlay: {
         flex: 1,
-        backgroundColor: 'rgba(255, 255, 255, 0.45)', // Slightly more opaque for Android fallback
+        backgroundColor: Platform.OS === 'android' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.4)',
     },
     content: {
         flex: 1,
@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
         fontSize: 42,
         color: COLORS.text,
         fontFamily: 'Urbanist-ExtraBold',
-        fontWeight: '800',
         lineHeight: 48,
     },
     divider: {
@@ -142,7 +141,6 @@ const styles = StyleSheet.create({
     buttonText: {
         color: COLORS.white,
         fontSize: 18,
-        fontWeight: '700',
         fontFamily: 'Urbanist-Bold',
     },
     buttonIcon: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Dimensions, Image, Platform } from 'react-native';
 import { BlurView } from 'expo-blur';
-import { COLORS } from '@/constants/theme';
+import { COLORS, FONTS } from '@/constants/theme';
 import { ChevronRight } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -101,13 +101,13 @@ const styles = StyleSheet.create({
     welcomeText: {
         fontSize: 20,
         color: COLORS.text,
-        fontFamily: 'Urbanist-Medium',
+        fontFamily: FONTS.medium,
         marginBottom: 4,
     },
     brandText: {
         fontSize: 42,
         color: COLORS.text,
-        fontFamily: 'Urbanist-ExtraBold',
+        fontFamily: FONTS.extraBold,
         lineHeight: 48,
     },
     divider: {
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     descriptionText: {
         fontSize: 18,
         color: COLORS.textSecondary,
-        fontFamily: 'Urbanist-Medium',
+        fontFamily: FONTS.medium,
         lineHeight: 28,
         letterSpacing: 0.3,
     },
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: COLORS.white,
         fontSize: 18,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
     },
     buttonIcon: {
         width: 36,

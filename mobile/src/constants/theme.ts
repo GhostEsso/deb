@@ -10,8 +10,9 @@ export const COLORS = {
 };
 
 export const FONTS = {
-    regular: 'Urbanist-Regular',
-    medium: 'Urbanist-Medium',
-    bold: 'Urbanist-Bold',
-    semiBold: 'Urbanist-SemiBold',
+    regular: 'UrbanistRegular',
+    medium: 'UrbanistMedium',
+    bold: 'UrbanistBold',
+    semiBold: 'UrbanistSemiBold',
+    extraBold: 'UrbanistExtraBold',
 };

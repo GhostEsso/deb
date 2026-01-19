@@ -15,11 +15,11 @@ SplashScreen.preventAutoHideAsync().catch(() => { });
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
-    'Urbanist-Regular': Urbanist_400Regular,
-    'Urbanist-Medium': Urbanist_500Medium,
-    'Urbanist-SemiBold': Urbanist_600SemiBold,
-    'Urbanist-Bold': Urbanist_700Bold,
-    'Urbanist-ExtraBold': Urbanist_800ExtraBold,
+    'UrbanistRegular': Urbanist_400Regular,
+    'UrbanistMedium': Urbanist_500Medium,
+    'UrbanistSemiBold': Urbanist_600SemiBold,
+    'UrbanistBold': Urbanist_700Bold,
+    'UrbanistExtraBold': Urbanist_800ExtraBold,
   });
 
   const [isReady, setIsReady] = useState(false);

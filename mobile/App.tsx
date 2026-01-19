@@ -10,7 +10,7 @@ import { View, ActivityIndicator } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     'Urbanist-Regular': Urbanist_400Regular,
     'Urbanist-Medium': Urbanist_500Medium,
     'Urbanist-SemiBold': Urbanist_600SemiBold,
@@ -18,10 +18,24 @@ export default function App() {
     'Urbanist-ExtraBold': Urbanist_800ExtraBold,
   });
 
-  if (!fontsLoaded) {
+  const [isReady, setIsReady] = React.useState(false);
+
+  React.useEffect(() => {
+    if (fontsLoaded || fontError) {
+      setIsReady(true);
+    }
+
+    const timeout = setTimeout(() => {
+      setIsReady(true);
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [fontsLoaded, fontError]);
+
+  if (!isReady) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' }}>
-        <ActivityIndicator color="#9B67FF" />
+        <ActivityIndicator size="large" color="#9B67FF" />
       </View>
     );
   }

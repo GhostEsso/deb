@@ -52,10 +52,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [user?.id]);
 
     const setupNotifications = async () => {
-        if (!user) return;
-        const token = await registerForPushNotificationsAsync();
-        if (token) {
-            await updateUserPushToken(user.id, token);
+        try {
+            if (!user) return;
+            const token = await registerForPushNotificationsAsync();
+            if (token) {
+                await updateUserPushToken(user.id, token);
+            }
+        } catch (error) {
+            console.error('Failed to setup notifications:', error);
         }
     };
 

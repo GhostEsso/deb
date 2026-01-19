@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Dimensions, Image, Platform } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { COLORS } from '@/constants/theme';
 import { ChevronRight } from 'lucide-react-native';
@@ -12,14 +12,14 @@ export const OnboardingScreen = ({ navigation }: any) => {
         <View style={styles.container}>
             <ImageBackground
                 source={require('../../assets/onboarding-bg.png')}
-                style={styles.backgroundImage}
+                style={StyleSheet.absoluteFillObject}
                 resizeMode="cover"
             >
-                <BlurView intensity={30} tint="light" style={StyleSheet.absoluteFill}>
+                <BlurView intensity={Platform.OS === 'android' ? 60 : 30} tint="light" style={StyleSheet.absoluteFill}>
                     <View style={styles.overlay} />
                 </BlurView>
 
-                <SafeAreaView style={styles.content}>
+                <SafeAreaView style={styles.content} edges={['top', 'bottom']}>
                     <View style={styles.topSection}>
                         <View style={styles.logoContainer}>
                             <Image
@@ -64,24 +64,20 @@ export const OnboardingScreen = ({ navigation }: any) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    backgroundImage: {
-        width: width,
-        height: height,
+        backgroundColor: COLORS.background,
     },
     overlay: {
         flex: 1,
-        backgroundColor: 'rgba(255, 255, 255, 0.4)',
+        backgroundColor: 'rgba(255, 255, 255, 0.45)', // Slightly more opaque for Android fallback
     },
     content: {
         flex: 1,
         justifyContent: 'space-between',
         paddingHorizontal: 30,
-        paddingVertical: 40,
     },
     topSection: {
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 40, // Increased for better spacing with edge-to-edge
     },
     logoContainer: {
         shadowColor: COLORS.primary,
@@ -94,18 +90,13 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 50,
-    },
-    logoBadgeText: {
-        color: COLORS.white,
-        fontSize: 24,
-        fontWeight: '900',
-        fontFamily: 'Urbanist-Bold',
+        backgroundColor: 'white', // Ensure it stands out if transparent
     },
     bottomSection: {
-        marginBottom: 20,
+        marginBottom: 40, // Increased for better spacing with nav bar
     },
     textContainer: {
-        marginBottom: 40,
+        marginBottom: 30,
     },
     welcomeText: {
         fontSize: 20,

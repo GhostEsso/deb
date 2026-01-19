@@ -1,19 +1,17 @@
 import 'react-native-gesture-handler';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AppNavigator } from '@/navigation/app-navigator';
 import { AuthProvider } from '@/services/auth.context';
 import { useFonts, Urbanist_400Regular, Urbanist_500Medium, Urbanist_600SemiBold, Urbanist_700Bold, Urbanist_800ExtraBold } from '@expo-google-fonts/urbanist';
-import { View, ActivityIndicator } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
+import { View } from 'react-native';
 
-// Keep the splash screen visible while we fetch resources
-SplashScreen.preventAutoHideAsync().catch(() => {
-  /* reloading the app might cause this to error, so we ignore it */
-});
+// On empêche le splash screen de se cacher automatiquement
+SplashScreen.preventAutoHideAsync().catch(() => { });
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts({
@@ -30,28 +28,27 @@ export default function App() {
     if (fontsLoaded || fontError) {
       setIsReady(true);
     }
-    // Safety timeout
+    // Sécurité : on force l'état prêt après 5s
     const timer = setTimeout(() => setIsReady(true), 5000);
     return () => clearTimeout(timer);
   }, [fontsLoaded, fontError]);
 
-  const onLayoutRootView = useCallback(async () => {
+  useEffect(() => {
     if (isReady) {
-      // This tells the splash screen to hide immediately!
-      await SplashScreen.hideAsync().catch(() => { });
+      SplashScreen.hideAsync().catch(() => { });
     }
   }, [isReady]);
 
   if (!isReady) {
-    return null; // Return null so splash screen stays visible
+    return null; // Le splash screen reste visible
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <AuthProvider>
           <NavigationContainer>
-            <StatusBar style="dark" />
+            <StatusBar style="dark" translucent backgroundColor="transparent" />
             <AppNavigator />
           </NavigationContainer>
         </AuthProvider>

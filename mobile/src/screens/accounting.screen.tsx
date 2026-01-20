@@ -3,12 +3,12 @@ import {
     View,
     Text,
     StyleSheet,
-    SafeAreaView,
     TouchableOpacity,
     ScrollView,
     ActivityIndicator,
     RefreshControl
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft, TrendingUp, Calendar, Clock, BarChart3, Wallet } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { accountingApi } from '@/services/api.service';

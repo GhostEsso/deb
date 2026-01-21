@@ -5,6 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AppNavigator } from '@/navigation/app-navigator';
 import { AuthProvider } from '@/services/auth.context';
+import { UpdateModal } from './src/components/update-modal';
 import { useFonts, Urbanist_400Regular, Urbanist_500Medium, Urbanist_600SemiBold, Urbanist_700Bold, Urbanist_800ExtraBold } from '@expo-google-fonts/urbanist';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
@@ -49,6 +50,7 @@ export default function App() {
         <AuthProvider>
           <NavigationContainer>
             <StatusBar style="dark" translucent backgroundColor="transparent" />
+            <UpdateModal />
             <AppNavigator />
           </NavigationContainer>
         </AuthProvider>

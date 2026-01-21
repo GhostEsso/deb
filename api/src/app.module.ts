@@ -10,6 +10,7 @@ import { UsersModule } from './users/users.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { AccountingModule } from './accounting/accounting.module';
+import { VersionModule } from './version/version.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AccountingModule } from './accounting/accounting.module';
     BookingsModule,
     NotificationsModule,
     AccountingModule,
+    VersionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

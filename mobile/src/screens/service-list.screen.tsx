@@ -190,7 +190,7 @@ export const ServiceListScreen = ({ navigation }: any) => {
                     <View>
                         <Text style={styles.title}>{user ? 'Bonjour' : 'Bienvenue'}</Text>
                         <Text style={styles.greetingName}>
-                            {user ? user.firstName : 'Sublimez vos mains'}
+                            {user ? user.firstName : 'Sublimez vous'}
                         </Text>
                     </View>
 

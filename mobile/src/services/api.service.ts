@@ -50,3 +50,7 @@ export const bookingsApi = {
 export const accountingApi = {
     getStats: () => api.get('/accounting/stats'),
 };
+
+export const versionApi = {
+    getLatestVersion: () => api.get('/version'),
+};

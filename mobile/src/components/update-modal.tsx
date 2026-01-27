@@ -22,17 +22,34 @@ export const UpdateModal = () => {
     const [downloaded, setDownloaded] = useState(false);
 
     useEffect(() => {
+        console.log('[Update] Initializing update check...');
+
+        // TEST VISUEL : On affiche la modale pendant 2 secondes au lancement
+        // pour confirmer que le composant fonctionne graphiquement.
+        setVisible(true);
+        const timer = setTimeout(() => {
+            // Après 2s, on vérifie s'il y a une VRAIE mise à jour avant de cacher
+            Updates.checkForUpdateAsync()
+                .then(update => {
+                    if (!update.isAvailable) setVisible(false);
+                })
+                .catch(() => setVisible(false));
+        }, 2000);
+
         checkUpdate();
+
+        return () => clearTimeout(timer);
     }, []);
 
     const checkUpdate = async () => {
         try {
             const update = await Updates.checkForUpdateAsync();
+            console.log('[Update] Vérification automatique - Disponible:', update.isAvailable);
             if (update.isAvailable) {
                 setVisible(true);
             }
         } catch (error) {
-            console.log('[Update] Pas de nouvelle mise à jour OTA ou erreur:', error);
+            console.log('[Update] Erreur de vérification OTA:', error);
         }
     };
 

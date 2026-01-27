@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
-import { COLORS } from '@/constants/theme';
+import { COLORS, FONTS } from '@/constants/theme';
 import { Clock, Calendar } from 'lucide-react-native';
 
 interface ServiceCardProps {
@@ -123,19 +123,20 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 16,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
         color: COLORS.text,
         flex: 1,
         marginRight: 8,
     },
     gridName: {
         fontSize: 14,
+        fontFamily: FONTS.extraBold,
         marginBottom: 2,
         marginRight: 0,
     },
     price: {
         fontSize: 16,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.extraBold,
         color: COLORS.primary,
     },
     gridPrice: {
@@ -145,7 +146,7 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 13,
         color: COLORS.textSecondary,
-        fontFamily: 'Urbanist-Medium',
+        fontFamily: FONTS.medium,
         lineHeight: 18,
         marginBottom: 10,
     },
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: COLORS.textSecondary,
         marginLeft: 4,
-        fontFamily: 'Urbanist-Medium',
+        fontFamily: FONTS.medium,
     },
     bookButton: {
         backgroundColor: COLORS.primary,
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
     bookButtonText: {
         color: COLORS.white,
         fontSize: 12,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
         marginLeft: 4,
     },
 });

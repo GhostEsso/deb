@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS } from '@/constants/theme';
+import { COLORS, FONTS } from '@/constants/theme';
 import { Clock, Euro, Star, ChevronLeft, Calendar, ShieldCheck, Heart, X, CheckCircle2 } from 'lucide-react-native';
 import { useAuth } from '@/services/auth.context';
 import { bookingsApi } from '@/services/api.service';
@@ -402,9 +402,8 @@ const styles = StyleSheet.create({
     },
     serviceName: {
         fontSize: 28,
-        fontWeight: '800',
         color: COLORS.text,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.extraBold,
         flex: 1,
     },
     ratingContainer: {
@@ -418,9 +417,8 @@ const styles = StyleSheet.create({
     ratingText: {
         marginLeft: 6,
         fontSize: 14,
-        fontWeight: '700',
         color: '#FFB800',
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
     },
     statsRow: {
         flexDirection: 'row',
@@ -452,30 +450,28 @@ const styles = StyleSheet.create({
     statLabel: {
         fontSize: 12,
         color: COLORS.textSecondary,
-        fontFamily: 'Urbanist-Medium',
+        fontFamily: FONTS.medium,
         marginBottom: 2,
     },
     statValue: {
         fontSize: 15,
-        fontWeight: '700',
         color: COLORS.text,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
     },
     section: {
         marginBottom: 32,
     },
     sectionTitle: {
         fontSize: 20,
-        fontWeight: '800',
         color: COLORS.text,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
         marginBottom: 16,
     },
     description: {
         fontSize: 16,
         lineHeight: 26,
         color: COLORS.textSecondary,
-        fontFamily: 'Urbanist-Medium',
+        fontFamily: FONTS.medium,
     },
     includeItem: {
         flexDirection: 'row',
@@ -494,12 +490,11 @@ const styles = StyleSheet.create({
     checkIcon: {
         color: '#4CAF50',
         fontSize: 14,
-        fontWeight: 'bold',
     },
     includeText: {
         fontSize: 16,
         color: COLORS.text,
-        fontFamily: 'Urbanist-Medium',
+        fontFamily: FONTS.medium,
     },
     footer: {
         position: 'absolute',
@@ -520,13 +515,12 @@ const styles = StyleSheet.create({
     totalLabel: {
         fontSize: 14,
         color: COLORS.textSecondary,
-        fontFamily: 'Urbanist-Medium',
+        fontFamily: FONTS.medium,
     },
     totalValue: {
         fontSize: 24,
-        fontWeight: '800',
         color: COLORS.primary,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
     },
     bookButton: {
         backgroundColor: COLORS.primary,
@@ -545,8 +539,7 @@ const styles = StyleSheet.create({
     bookButtonText: {
         color: COLORS.white,
         fontSize: 18,
-        fontWeight: '700',
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
         marginLeft: 10,
     },
     modalOverlay: {
@@ -590,12 +583,12 @@ const styles = StyleSheet.create({
     },
     modalTitle: {
         fontSize: 22,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
         color: COLORS.text,
     },
     modalSubtitleLabel: {
         fontSize: 14,
-        fontFamily: 'Urbanist-Medium',
+        fontFamily: FONTS.medium,
         color: COLORS.textSecondary,
         marginTop: 2,
     },
@@ -611,18 +604,18 @@ const styles = StyleSheet.create({
     },
     previewName: {
         fontSize: 18,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
         color: COLORS.text,
         marginBottom: 6,
     },
     previewPrice: {
         fontSize: 15,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
         color: COLORS.primary,
     },
     sectionLabel: {
         fontSize: 17,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
         color: COLORS.text,
         marginBottom: 16,
     },
@@ -654,19 +647,19 @@ const styles = StyleSheet.create({
     },
     dateDayName: {
         fontSize: 11,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
         color: COLORS.textSecondary,
         marginBottom: 4,
     },
     dateDayNum: {
         fontSize: 20,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
         color: COLORS.text,
         marginBottom: 2,
     },
     dateMonth: {
         fontSize: 11,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
         color: COLORS.textSecondary,
     },
     selectedDateText: {
@@ -687,7 +680,7 @@ const styles = StyleSheet.create({
     },
     timeCategoryTitle: {
         fontSize: 13,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
         color: COLORS.textSecondary,
         marginBottom: 12,
         textTransform: 'uppercase',
@@ -715,7 +708,7 @@ const styles = StyleSheet.create({
     },
     timeSlotText: {
         fontSize: 14,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
         color: COLORS.text,
     },
     selectedTimeSlotText: {
@@ -745,7 +738,7 @@ const styles = StyleSheet.create({
     },
     confirmBtnText: {
         color: COLORS.white,
-        fontFamily: 'Urbanist-Bold',
+        fontFamily: FONTS.bold,
         fontSize: 16,
         marginLeft: 8,
     },

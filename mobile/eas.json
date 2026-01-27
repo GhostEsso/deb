@@ -14,7 +14,7 @@
                 "buildType": "apk"
             },
             "env": {
-                "EXPO_PUBLIC_API_URL": "https://live-windy-ghost-gramers-302e2bb3.koyeb.app/api/V1"
+                "EXPO_PUBLIC_API_URL": "https://deb-9z2n.vercel.app/api/V1"
             }
         },
         "production": {}

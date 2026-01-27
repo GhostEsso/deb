@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Dimensions, Image, Platform } from 'react-native';
-import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS, FONTS } from '@/constants/theme';
 import { ChevronRight } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,9 +15,10 @@ export const OnboardingScreen = ({ navigation }: any) => {
                 style={StyleSheet.absoluteFillObject}
                 resizeMode="cover"
             >
-                <BlurView intensity={Platform.OS === 'android' ? 60 : 30} tint="light" style={StyleSheet.absoluteFill}>
-                    <View style={styles.overlay} />
-                </BlurView>
+                <LinearGradient
+                    colors={['rgba(255, 255, 255, 0.1)', 'rgba(255, 255, 255, 0.95)']}
+                    style={StyleSheet.absoluteFill}
+                />
 
                 <SafeAreaView style={styles.content} edges={['top', 'bottom']}>
                     <View style={styles.topSection}>
@@ -65,10 +66,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.background,
-    },
-    overlay: {
-        flex: 1,
-        backgroundColor: Platform.OS === 'android' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.4)',
     },
     content: {
         flex: 1,

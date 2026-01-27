@@ -30,7 +30,19 @@ export class CloudinaryService {
                 },
             );
 
+            if (!file || !file.buffer) {
+                return reject(new Error('File buffer is missing'));
+            }
             streamifier.createReadStream(file.buffer).pipe(uploadStream);
+        });
+    }
+
+    async deleteImage(publicId: string): Promise<any> {
+        return new Promise((resolve, reject) => {
+            cloudinary.uploader.destroy(publicId, (error, result) => {
+                if (error) return reject(error);
+                resolve(result);
+            });
         });
     }
 }

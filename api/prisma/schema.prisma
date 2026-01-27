@@ -41,9 +41,12 @@ model User {
   phoneNumber   String?
   role          UserRole  @default(CLIENT)
   pushToken     String?
+  profilePictureUrl String?
+  profilePicturePublicId String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   bookings      Booking[]
+  stories       Story[]
 
   @@index([email])
 }
@@ -78,4 +81,17 @@ model Booking {
 
   @@index([date, status])
   @@index([userId])
+}
+
+model Story {
+  id        String   @id @default(uuid())
+  imageUrl  String
+  publicId  String
+  caption   String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([expiresAt])
 }

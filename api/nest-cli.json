@@ -8,6 +8,10 @@
       {
         "include": "mail/templates/**/*",
         "outDir": "dist/src"
+      },
+      {
+        "include": "generated/client/**/*",
+        "outDir": "dist"
       }
     ]
   }

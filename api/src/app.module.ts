@@ -11,10 +11,13 @@ import { BookingsModule } from './bookings/bookings.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { AccountingModule } from './accounting/accounting.module';
 import { VersionModule } from './version/version.module';
+import { StoriesModule } from './stories/stories.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ScheduleModule.forRoot(),
     PrismaModule,
     ServicesModule,
     AuthModule,
@@ -24,6 +27,7 @@ import { VersionModule } from './version/version.module';
     NotificationsModule,
     AccountingModule,
     VersionModule,
+    StoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

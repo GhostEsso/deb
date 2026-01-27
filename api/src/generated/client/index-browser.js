@@ -134,6 +134,8 @@ exports.Prisma.UserScalarFieldEnum = {
   phoneNumber: 'phoneNumber',
   role: 'role',
   pushToken: 'pushToken',
+  profilePictureUrl: 'profilePictureUrl',
+  profilePicturePublicId: 'profilePicturePublicId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -160,6 +162,16 @@ exports.Prisma.BookingScalarFieldEnum = {
   serviceId: 'serviceId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.StoryScalarFieldEnum = {
+  id: 'id',
+  imageUrl: 'imageUrl',
+  publicId: 'publicId',
+  caption: 'caption',
+  userId: 'userId',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -198,7 +210,8 @@ exports.BookingStatus = exports.$Enums.BookingStatus = {
 exports.Prisma.ModelName = {
   User: 'User',
   Service: 'Service',
-  Booking: 'Booking'
+  Booking: 'Booking',
+  Story: 'Story'
 };
 
 /**

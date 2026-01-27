@@ -11,6 +11,7 @@ interface User {
     gender: string;
     role: 'ADMIN' | 'CLIENT';
     phoneNumber?: string;
+    profilePictureUrl?: string;
 }
 
 interface RegisterData {
@@ -31,6 +32,7 @@ interface AuthContextType {
     signUp: (data: RegisterData) => Promise<{ requiresVerification?: boolean }>;
     signOut: () => Promise<void>;
     updateProfile: (data: { firstName?: string, lastName?: string, password?: string }) => Promise<void>;
+    updateProfilePicture: (formData: FormData) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -137,8 +139,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
     };
 
+    const updateProfilePicture = async (formData: FormData) => {
+        if (!user) return;
+        try {
+            const response = await usersApi.uploadProfilePicture(user.id, formData);
+            if (response.data.success) {
+                setUser(response.data.user);
+                await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(response.data.user));
+            }
+        } catch (error: any) {
+            const message = error.response?.data?.message || 'Erreur lors de la mise à jour de la photo';
+            throw new Error(message);
+        }
+    };
+
     return (
-        <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut, updateProfile }}>
+        <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut, updateProfile, updateProfilePicture }}>
             {children}
         </AuthContext.Provider>
     );

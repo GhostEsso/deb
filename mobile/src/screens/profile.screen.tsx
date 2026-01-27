@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert, Dimensions, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert, Dimensions, ActivityIndicator, Platform, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '@/constants/theme';
-import { ChevronLeft, User, Mail, Lock, LogOut, Calendar, Save, Edit2, Loader2, Layout, Plus, Package, Trash2, Image as ImageIcon, Check, XCircle, X, Phone, BarChart3 } from 'lucide-react-native';
+import { ChevronLeft, User, Mail, Lock, LogOut, Calendar, Save, Edit2, Loader2, Layout, Plus, Package, Trash2, Image as ImageIcon, Check, XCircle, X, Phone, BarChart3, Camera } from 'lucide-react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '@/services/auth.context';
 import { bookingsApi, servicesApi } from '@/services/api.service';
 import { useFocusEffect } from '@react-navigation/native';
 
 export const ProfileScreen = ({ navigation }: any) => {
-    const { user, signOut, updateProfile } = useAuth();
+    const { user, signOut, updateProfile, updateProfilePicture } = useAuth();
     const [isEditing, setIsEditing] = useState(false);
+    const [uploadingImage, setUploadingImage] = useState(false);
     const [bookings, setBookings] = useState<any[]>([]);
     const [services, setServices] = useState<any[]>([]);
     const [loadingBookings, setLoadingBookings] = useState(true);
@@ -92,6 +94,46 @@ export const ProfileScreen = ({ navigation }: any) => {
             ],
             'plain-text'
         );
+    };
+
+    const handleSelectProfilePicture = async () => {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+            Alert.alert('Permission refusée', 'Nous avons besoin de votre permission pour accéder à vos photos.');
+            return;
+        }
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 0.8,
+        });
+
+        if (!result.canceled && result.assets[0]) {
+            const asset = result.assets[0];
+            setUploadingImage(true);
+
+            try {
+                const formData = new FormData();
+                const filename = asset.uri.split('/').pop();
+                const match = /\.(\w+)$/.exec(filename || '');
+                const type = match ? `image/${match[1]}` : `image`;
+
+                formData.append('file', {
+                    uri: asset.uri,
+                    name: filename,
+                    type,
+                } as any);
+
+                await updateProfilePicture(formData);
+                Alert.alert('Succès', 'Photo de profil mise à jour');
+            } catch (error: any) {
+                Alert.alert('Erreur', error.message);
+            } finally {
+                setUploadingImage(false);
+            }
+        }
     };
 
     const handleLogout = async () => {
@@ -180,12 +222,28 @@ export const ProfileScreen = ({ navigation }: any) => {
 
                     {/* Avatar Section */}
                     <View style={styles.avatarSection}>
-                        <View style={styles.avatarContainer}>
-                            <Text style={styles.avatarText}>
-                                {user?.firstName?.charAt(0).toUpperCase()}
-                                {user?.lastName?.charAt(0).toUpperCase()}
-                            </Text>
-                        </View>
+                        <TouchableOpacity
+                            style={styles.avatarContainer}
+                            onPress={handleSelectProfilePicture}
+                            disabled={uploadingImage}
+                        >
+                            {uploadingImage ? (
+                                <ActivityIndicator color={COLORS.white} />
+                            ) : user?.profilePictureUrl ? (
+                                <Image
+                                    source={{ uri: user.profilePictureUrl }}
+                                    style={styles.avatarImage}
+                                />
+                            ) : (
+                                <Text style={styles.avatarText}>
+                                    {user?.firstName?.charAt(0).toUpperCase()}
+                                    {user?.lastName?.charAt(0).toUpperCase()}
+                                </Text>
+                            )}
+                            <View style={styles.cameraIconContainer}>
+                                <Camera size={14} color={COLORS.white} />
+                            </View>
+                        </TouchableOpacity>
                         <Text style={styles.userName}>{user?.firstName} {user?.lastName}</Text>
                         <Text style={styles.userEmail}>{user?.email}</Text>
                     </View>
@@ -507,6 +565,24 @@ const styles = StyleSheet.create({
         fontSize: 36,
         fontFamily: 'Urbanist-Bold',
         color: COLORS.white,
+    },
+    avatarImage: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 50,
+    },
+    cameraIconContainer: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        backgroundColor: COLORS.primary,
+        width: 28,
+        height: 28,
+        borderRadius: 14,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 2,
+        borderColor: COLORS.background,
     },
     userName: {
         fontSize: 24,

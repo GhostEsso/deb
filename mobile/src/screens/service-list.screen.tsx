@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity, TextInput, Dimensions, ScrollView } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity, TextInput, Dimensions, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '@/constants/theme';
 import { ServiceCard } from '@/components/service-card';
@@ -9,6 +9,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from '@/services/auth.context';
 import { Modal, Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { StoryBar } from '@/components/story-bar';
 
 const { width } = Dimensions.get('window');
 
@@ -199,10 +200,17 @@ export const ServiceListScreen = ({ navigation }: any) => {
                             style={styles.profileBtn}
                             onPress={() => navigation.navigate('Profile')}
                         >
-                            <Text style={styles.profileInitials}>
-                                {user.firstName?.charAt(0).toUpperCase()}
-                                {user.lastName?.charAt(0).toUpperCase()}
-                            </Text>
+                            {user.profilePictureUrl ? (
+                                <Image
+                                    source={{ uri: user.profilePictureUrl }}
+                                    style={styles.profileImage}
+                                />
+                            ) : (
+                                <Text style={styles.profileInitials}>
+                                    {user.firstName?.charAt(0).toUpperCase()}
+                                    {user.lastName?.charAt(0).toUpperCase()}
+                                </Text>
+                            )}
                         </TouchableOpacity>
                     ) : (
                         <TouchableOpacity
@@ -232,6 +240,9 @@ export const ServiceListScreen = ({ navigation }: any) => {
                         )}
                     </View>
                 </View>
+
+                {/* Stories Section */}
+                <StoryBar />
 
                 {/* Services Title Section */}
                 <View style={styles.sectionHeader}>
@@ -618,6 +629,11 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 8,
         elevation: 4,
+        overflow: 'hidden',
+    },
+    profileImage: {
+        width: '100%',
+        height: '100%',
     },
     profileInitials: {
         fontSize: 18,

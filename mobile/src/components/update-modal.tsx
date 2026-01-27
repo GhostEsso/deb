@@ -22,34 +22,20 @@ export const UpdateModal = () => {
     const [downloaded, setDownloaded] = useState(false);
 
     useEffect(() => {
-        console.log('[Update] Initializing update check...');
-
-        // TEST VISUEL : On affiche la modale pendant 2 secondes au lancement
-        // pour confirmer que le composant fonctionne graphiquement.
-        setVisible(true);
-        const timer = setTimeout(() => {
-            // Après 2s, on vérifie s'il y a une VRAIE mise à jour avant de cacher
-            Updates.checkForUpdateAsync()
-                .then(update => {
-                    if (!update.isAvailable) setVisible(false);
-                })
-                .catch(() => setVisible(false));
-        }, 2000);
-
         checkUpdate();
-
-        return () => clearTimeout(timer);
     }, []);
 
     const checkUpdate = async () => {
         try {
+            console.log('[Update] Vérification de mise à jour...');
             const update = await Updates.checkForUpdateAsync();
-            console.log('[Update] Vérification automatique - Disponible:', update.isAvailable);
+            console.log('[Update] Résultat de disponibilité:', update.isAvailable);
+
             if (update.isAvailable) {
                 setVisible(true);
             }
-        } catch (error) {
-            console.log('[Update] Erreur de vérification OTA:', error);
+        } catch (error: any) {
+            console.log('[Update] Erreur ou non supporté (Expo Go):', error.message);
         }
     };
 
@@ -92,8 +78,7 @@ export const UpdateModal = () => {
                         </TouchableOpacity>
                     )}
 
-                    <View style={[styles.iconContainer, { borderColor: 'red', borderWidth: 5 }]}>
-                        <Text style={{ color: 'red', fontWeight: 'bold' }}>FORCE TEST</Text>
+                    <View style={styles.iconContainer}>
                         {downloaded ? (
                             <CheckCircle2 size={48} color={COLORS.success} />
                         ) : (

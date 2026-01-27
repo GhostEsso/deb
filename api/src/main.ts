@@ -24,7 +24,7 @@ const handler = async (req: Request, res: Response) => {
 // Pour le développement local
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
   const port = process.env.PORT ?? 3000;
-  bootstrap().then((server) => {
+  bootstrap().then((server: any) => {
     server.listen(port, () => {
       console.log(`Application is running on: http://localhost:${port}/api/V1`);
     });

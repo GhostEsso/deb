@@ -92,7 +92,8 @@ export const UpdateModal = () => {
                         </TouchableOpacity>
                     )}
 
-                    <View style={styles.iconContainer}>
+                    <View style={[styles.iconContainer, { borderColor: 'red', borderWidth: 5 }]}>
+                        <Text style={{ color: 'red', fontWeight: 'bold' }}>FORCE TEST</Text>
                         {downloaded ? (
                             <CheckCircle2 size={48} color={COLORS.success} />
                         ) : (

@@ -10,6 +10,7 @@
             "distribution": "internal"
         },
         "preview": {
+            "channel": "preview",
             "android": {
                 "buildType": "apk"
             },
@@ -17,7 +18,9 @@
                 "EXPO_PUBLIC_API_URL": "https://deb-zeta.vercel.app/api/V1"
             }
         },
-        "production": {}
+        "production": {
+            "channel": "production"
+        }
     },
     "submit": {
         "production": {}

@@ -8,99 +8,57 @@ import {
     Dimensions,
     ActivityIndicator,
     Alert,
-    Platform
 } from 'react-native';
-import * as FileSystem from 'expo-file-system';
-import * as IntentLauncher from 'expo-intent-launcher';
-import * as Sharing from 'expo-sharing';
+import * as Updates from 'expo-updates';
 import Constants from 'expo-constants';
-import { Download, AlertTriangle, CheckCircle2, X } from 'lucide-react-native';
+import { Download, CheckCircle2, X, RefreshCw } from 'lucide-react-native';
 import { COLORS, FONTS } from '@/constants/theme';
-import { versionApi } from '@/services/api.service';
 
 const { width } = Dimensions.get('window');
 
 export const UpdateModal = () => {
     const [visible, setVisible] = useState(false);
-    const [updateInfo, setUpdateInfo] = useState<any>(null);
     const [downloading, setDownloading] = useState(false);
-    const [progress, setProgress] = useState(0);
     const [downloaded, setDownloaded] = useState(false);
 
-    const currentVersion = Constants.expoConfig?.version || '1.0.0';
-
     useEffect(() => {
-        checkUpdate();
+        if (!__DEV__) {
+            checkUpdate();
+        }
     }, []);
 
     const checkUpdate = async () => {
         try {
-            const response = await versionApi.getLatestVersion();
-            const latest = response.data;
-
-            if (latest.version !== currentVersion) {
-                setUpdateInfo(latest);
+            const update = await Updates.checkForUpdateAsync();
+            if (update.isAvailable) {
                 setVisible(true);
             }
         } catch (error) {
-            console.error('[Update] Erreur lors de la vérification:', error);
+            console.log('[Update] Pas de nouvelle mise à jour OTA ou erreur:', error);
         }
     };
 
     const handleUpdate = async () => {
         if (downloaded) {
-            installApk();
-            return;
-        }
-
-        if (Platform.OS !== 'android') {
-            Alert.alert("Information", "Les mises à jour automatiques sont principalement pour Android.");
+            await Updates.reloadAsync();
             return;
         }
 
         try {
             setDownloading(true);
-            const fileUri = FileSystem.cacheDirectory + 'NailsDG_Update.apk';
+            await Updates.fetchUpdateAsync();
+            setDownloaded(true);
+            setDownloading(false);
 
-            const downloadResumable = FileSystem.createDownloadResumable(
-                updateInfo.apkUrl,
-                fileUri,
-                {},
-                (downloadProgress) => {
-                    const prog = downloadProgress.totalBytesWritten / downloadProgress.totalBytesExpectedToWrite;
-                    setProgress(prog);
-                }
+            Alert.alert(
+                "Mise à jour prête",
+                "L'application va maintenant redémarrer pour appliquer les changements.",
+                [{ text: "OK", onPress: () => Updates.reloadAsync() }]
             );
-
-            const result = await downloadResumable.downloadAsync();
-
-            if (result && result.uri) {
-                setDownloaded(true);
-                setDownloading(false);
-                installApk();
-            }
         } catch (error) {
             setDownloading(false);
-            Alert.alert("Erreur", "Le téléchargement a échoué. Vérifiez votre connexion.");
-            console.error('[Update] Erreur téléchargement:', error);
-        }
-    };
-
-    const installApk = async () => {
-        const fileUri = FileSystem.cacheDirectory + 'NailsDG_Update.apk';
-
-        try {
-            const contentUri = await FileSystem.getContentUriAsync(fileUri);
-
-            await IntentLauncher.startActivityAsync('android.intent.action.INSTALL_PACKAGE', {
-                data: contentUri,
-                flags: 1,
-                type: 'application/vnd.android.package-archive',
-            });
-        } catch (error) {
-            console.error('[Update] Erreur installation:', error);
-            // Fallback: essayer via Sharing si l'intent launcher échoue
-            await Sharing.shareAsync(fileUri);
+            Alert.alert("Erreur", "La mise à jour en direct a échoué.");
+            console.error('[Update] Erreur fetch:', error);
         }
     };
 
@@ -110,11 +68,10 @@ export const UpdateModal = () => {
         <Modal transparent visible={visible} animationType="fade">
             <View style={styles.overlay}>
                 <View style={styles.container}>
-                    {!updateInfo?.forceUpdate && (
+                    {!downloading && (
                         <TouchableOpacity
                             style={styles.closeBtn}
                             onPress={() => setVisible(false)}
-                            disabled={downloading}
                         >
                             <X size={20} color={COLORS.textSecondary} />
                         </TouchableOpacity>
@@ -124,33 +81,30 @@ export const UpdateModal = () => {
                         {downloaded ? (
                             <CheckCircle2 size={48} color={COLORS.success} />
                         ) : (
-                            <Download size={48} color={COLORS.primary} />
+                            <RefreshCw size={48} color={COLORS.primary} />
                         )}
                     </View>
 
-                    <Text style={styles.title}>Mise à jour disponible</Text>
-                    <Text style={styles.versionText}>Version {updateInfo?.version} 🚀</Text>
+                    <Text style={styles.title}>Nouvelle version disponible !</Text>
 
                     <Text style={styles.description}>
-                        {updateInfo?.notes || "Une nouvelle version de NailsDG est disponible avec des améliorations."}
+                        Une mise à jour rapide est disponible pour améliorer votre expérience NailsDG.
                     </Text>
 
                     {downloading ? (
                         <View style={styles.progressSection}>
-                            <View style={styles.progressBarBg}>
-                                <View style={[styles.progressBarFill, { width: `${progress * 100}%` }]} />
-                            </View>
-                            <Text style={styles.progressText}>{Math.round(progress * 100)}%</Text>
+                            <ActivityIndicator size="large" color={COLORS.primary} />
+                            <Text style={styles.progressText}>Téléchargement en cours...</Text>
                         </View>
                     ) : (
                         <TouchableOpacity style={styles.updateBtn} onPress={handleUpdate}>
                             <Text style={styles.updateBtnText}>
-                                {downloaded ? "Installer maintenant" : "Mettre à jour"}
+                                {downloaded ? "Relancer l'application" : "Mettre à jour maintenant"}
                             </Text>
                         </TouchableOpacity>
                     )}
 
-                    {!updateInfo?.forceUpdate && !downloading && (
+                    {!downloading && (
                         <TouchableOpacity style={styles.skipBtn} onPress={() => setVisible(false)}>
                             <Text style={styles.skipBtnText}>Plus tard</Text>
                         </TouchableOpacity>

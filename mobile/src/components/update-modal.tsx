@@ -22,9 +22,7 @@ export const UpdateModal = () => {
     const [downloaded, setDownloaded] = useState(false);
 
     useEffect(() => {
-        if (!__DEV__) {
-            checkUpdate();
-        }
+        checkUpdate();
     }, []);
 
     const checkUpdate = async () => {

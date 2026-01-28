@@ -10,14 +10,16 @@ export const api = axios.create({
 
 // Interceptor for logging or auth if needed later
 api.interceptors.request.use((config) => {
-    console.log(`[API] ${config.method?.toUpperCase()} ${config.url}`, config.headers);
+    console.log(`[API] ${config.method?.toUpperCase()} ${config.url}`);
+
+    // Ensure basic headers
+    config.headers = config.headers || {};
+    config.headers['Accept'] = 'application/json';
+
     if (config.data instanceof FormData) {
-        // On React Native, don't set Content-Type for FormData
-        // to let the system generate the correct boundary
-        if (config.headers) {
-            delete config.headers['Content-Type'];
-        }
-    } else if (config.headers && !config.headers['Content-Type']) {
+        // Essential for React Native to let the system set boundary
+        delete config.headers['Content-Type'];
+    } else if (!config.headers['Content-Type']) {
         config.headers['Content-Type'] = 'application/json';
     }
     return config;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Modal, Dimensions, ActivityIndicator, Alert, Platform, Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { storiesApi } from '@/services/api.service';
+import { storiesApi, API_URL } from '@/services/api.service';
 import { COLORS, FONTS } from '@/constants/theme';
 import { LinearGradient } from 'expo-linear-gradient';
 import { X, Plus, Camera } from 'lucide-react-native';
@@ -110,9 +110,10 @@ export const StoryBar = () => {
             console.error('Error uploading story:', error);
             const errorMessage = error.response?.data?.message || error.message || 'Erreur inconnue';
             const statusCode = error.response?.status ? ` (Code: ${error.response.status})` : '';
-            // Version v1.6 pour vérifier l'API URL
-            const apiUrl = error.config?.url || 'URL inconnue';
-            Alert.alert(`Erreur Upload (v1.6)`, `API: ${apiUrl}\n\n${errorMessage}${statusCode}`);
+            // Version v1.7 pour vérifier l'API URL globale et locale
+            const fullUrl = `${error.config?.baseURL || ''}${error.config?.url || ''}`;
+            const baseUrlConst = API_URL;
+            Alert.alert(`Erreur Upload (v1.7)`, `BaseURL: ${baseUrlConst}\nFull Path: ${fullUrl}\n\n${errorMessage}${statusCode}`);
         } finally {
             setUploading(false);
         }

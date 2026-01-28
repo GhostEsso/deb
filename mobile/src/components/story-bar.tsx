@@ -110,8 +110,9 @@ export const StoryBar = () => {
             console.error('Error uploading story:', error);
             const errorMessage = error.response?.data?.message || error.message || 'Erreur inconnue';
             const statusCode = error.response?.status ? ` (Code: ${error.response.status})` : '';
-            // Version v1.5 pour vérifier si l'update est bien passée
-            Alert.alert('Erreur Upload (v1.5)', `Impossible de publier : ${errorMessage}${statusCode}`);
+            // Version v1.6 pour vérifier l'API URL
+            const apiUrl = error.config?.url || 'URL inconnue';
+            Alert.alert(`Erreur Upload (v1.6)`, `API: ${apiUrl}\n\n${errorMessage}${statusCode}`);
         } finally {
             setUploading(false);
         }

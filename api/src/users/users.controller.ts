@@ -1,4 +1,4 @@
-import { Controller, Patch, Body, Param, Post, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Patch, Body, Param, Post, UseInterceptors, UploadedFile, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -25,5 +25,10 @@ export class UsersController {
             mimetype: file.mimetype
         } : 'UNDEFINED');
         return this.usersService.updateProfilePicture(id, file);
+    }
+
+    @Delete(':id/profile-picture')
+    deleteProfilePicture(@Param('id') id: string) {
+        return this.usersService.deleteProfilePicture(id);
     }
 }

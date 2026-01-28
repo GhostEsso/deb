@@ -81,4 +81,36 @@ export class UsersService {
             user: userWithoutPassword,
         };
     }
+
+    async deleteProfilePicture(id: string) {
+        const user = await this.prisma.user.findUnique({
+            where: { id },
+        });
+
+        if (!user) {
+            throw new NotFoundException('Utilisateur non trouvé');
+        }
+
+        if (user.profilePicturePublicId) {
+            try {
+                await this.cloudinaryService.deleteImage(user.profilePicturePublicId);
+            } catch (error) {
+                console.error('Error deleting profile picture from Cloudinary:', error);
+            }
+        }
+
+        const updatedUser = await this.prisma.user.update({
+            where: { id },
+            data: {
+                profilePictureUrl: null,
+                profilePicturePublicId: null,
+            },
+        });
+
+        const { password, ...userWithoutPassword } = updatedUser;
+        return {
+            success: true,
+            user: userWithoutPassword,
+        };
+    }
 }

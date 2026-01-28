@@ -6,6 +6,7 @@ import { ChevronLeft, User, Mail, Lock, LogOut, Calendar, Save, Edit2, Loader2, 
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '@/services/auth.context';
 import { usersApi, bookingsApi, servicesApi, API_URL } from '@/services/api.service';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useFocusEffect } from '@react-navigation/native';
 
 export const ProfileScreen = ({ navigation }: any) => {

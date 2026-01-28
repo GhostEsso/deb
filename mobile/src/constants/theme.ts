@@ -1,6 +1,6 @@
 export const COLORS = {
     primary: '#9B67FF', // Soft Purple
-    secondary: '#F5F0FF', // Very Light Purple
+    secondary: '#E5D9FF', // Muted Purple (A bit heavier)
     background: '#FFFFFF',
     text: '#1A1A1A',
     textSecondary: '#757575',

@@ -182,7 +182,7 @@ export const ServiceListScreen = ({ navigation }: any) => {
     return (
         <View style={styles.container}>
             <LinearGradient
-                colors={['#F8F4FF', '#FFFFFF']}
+                colors={[COLORS.secondary, COLORS.white]}
                 style={StyleSheet.absoluteFill}
             />
 

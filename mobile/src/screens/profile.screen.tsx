@@ -116,12 +116,13 @@ export const ProfileScreen = ({ navigation }: any) => {
 
             try {
                 const formData = new FormData();
+                const uri = Platform.OS === 'android' ? asset.uri : asset.uri.replace('file://', '');
                 const filename = asset.uri.split('/').pop() || 'profile.jpg';
                 const match = /\.(\w+)$/.exec(filename);
                 const type = match ? `image/${match[1]}` : `image/jpeg`;
 
                 formData.append('file', {
-                    uri: asset.uri,
+                    uri: uri,
                     name: filename,
                     type,
                 } as any);
@@ -131,7 +132,7 @@ export const ProfileScreen = ({ navigation }: any) => {
             } catch (error: any) {
                 const errorMessage = error.response?.data?.message || error.message || 'Erreur inconnue';
                 const statusCode = error.response?.status ? ` (Code: ${error.response.status})` : '';
-                Alert.alert('Erreur', `Échec de l'upload : ${errorMessage}${statusCode}`);
+                Alert.alert('Erreur Upload (v1.5)', `Échec : ${errorMessage}${statusCode}`);
             } finally {
                 setUploadingImage(false);
             }

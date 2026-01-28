@@ -79,14 +79,17 @@ export const StoryBar = () => {
         setUploading(true);
 
         try {
+            console.log('[UPLOAD DEBUG] Story Asset URI:', asset.uri);
             const formData = new FormData();
+
+            // Formatage URI robuste pour téléphone physique
             const uri = Platform.OS === 'android' ? asset.uri : asset.uri.replace('file://', '');
             const filename = asset.uri.split('/').pop() || `story_${Date.now()}.jpg`;
             const match = /\.(\w+)$/.exec(filename);
             const type = match ? `image/${match[1]}` : `image/jpeg`;
 
             formData.append('file', {
-                uri: asset.uri,
+                uri: uri,
                 name: filename,
                 type: type,
             } as any);
@@ -107,7 +110,8 @@ export const StoryBar = () => {
             console.error('Error uploading story:', error);
             const errorMessage = error.response?.data?.message || error.message || 'Erreur inconnue';
             const statusCode = error.response?.status ? ` (Code: ${error.response.status})` : '';
-            Alert.alert('Erreur', `Impossible de publier la story : ${errorMessage}${statusCode}`);
+            // Version v1.5 pour vérifier si l'update est bien passée
+            Alert.alert('Erreur Upload (v1.5)', `Impossible de publier : ${errorMessage}${statusCode}`);
         } finally {
             setUploading(false);
         }

@@ -146,6 +146,37 @@ export const ProfileScreen = ({ navigation }: any) => {
         }
     };
 
+    const handleDeleteProfilePicture = () => {
+        if (!user?.profilePictureUrl) return;
+
+        Alert.alert(
+            'Supprimer la photo',
+            'Êtes-vous sûr de vouloir supprimer votre photo de profil ?',
+            [
+                { text: 'Annuler', style: 'cancel' },
+                {
+                    text: 'Supprimer',
+                    style: 'destructive',
+                    onPress: async () => {
+                        try {
+                            setUploadingImage(true);
+                            const response = await usersApi.deleteProfilePicture(user.id);
+                            if (response.data.success) {
+                                // Mettre à jour le contexte auth avec le nouvel utilisateur (sans photo)
+                                await updateProfile({}); // Trick pour rafraîchir le contexte si nécessaire
+                                Alert.alert('Succès', 'Photo supprimée');
+                            }
+                        } catch (error: any) {
+                            Alert.alert('Erreur', 'Impossible de supprimer la photo');
+                        } finally {
+                            setUploadingImage(false);
+                        }
+                    }
+                }
+            ]
+        );
+    };
+
     const handleLogout = async () => {
         Alert.alert(
             'Déconnexion',
@@ -253,6 +284,17 @@ export const ProfileScreen = ({ navigation }: any) => {
                             <View style={styles.cameraIconContainer}>
                                 <Camera size={14} color={COLORS.white} />
                             </View>
+                            {user?.profilePictureUrl && (
+                                <TouchableOpacity
+                                    style={styles.deleteImageIconContainer}
+                                    onPress={(e) => {
+                                        e.stopPropagation();
+                                        handleDeleteProfilePicture();
+                                    }}
+                                >
+                                    <Trash2 size={12} color={COLORS.white} />
+                                </TouchableOpacity>
+                            )}
                         </TouchableOpacity>
                         <Text style={styles.userName}>{user?.firstName} {user?.lastName}</Text>
                         <Text style={styles.userEmail}>{user?.email}</Text>
@@ -589,6 +631,19 @@ const styles = StyleSheet.create({
         width: 28,
         height: 28,
         borderRadius: 14,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 2,
+        borderColor: COLORS.background,
+    },
+    deleteImageIconContainer: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        backgroundColor: '#FF4444',
+        width: 24,
+        height: 24,
+        borderRadius: 12,
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 2,

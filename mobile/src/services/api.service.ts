@@ -52,6 +52,7 @@ export const usersApi = {
             },
         });
     },
+    deleteProfilePicture: (id: string) => api.delete(`users/${id}/profile-picture`),
 };
 
 export const bookingsApi = {

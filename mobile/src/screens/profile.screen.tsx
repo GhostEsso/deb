@@ -116,9 +116,9 @@ export const ProfileScreen = ({ navigation }: any) => {
 
             try {
                 const formData = new FormData();
-                const filename = asset.uri.split('/').pop();
-                const match = /\.(\w+)$/.exec(filename || '');
-                const type = match ? `image/${match[1]}` : `image`;
+                const filename = asset.uri.split('/').pop() || 'profile.jpg';
+                const match = /\.(\w+)$/.exec(filename);
+                const type = match ? `image/${match[1]}` : `image/jpeg`;
 
                 formData.append('file', {
                     uri: asset.uri,

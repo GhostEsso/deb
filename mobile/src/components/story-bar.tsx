@@ -80,6 +80,7 @@ export const StoryBar = () => {
 
         try {
             const formData = new FormData();
+            const uri = Platform.OS === 'android' ? asset.uri : asset.uri.replace('file://', '');
             const filename = asset.uri.split('/').pop() || `story_${Date.now()}.jpg`;
             const match = /\.(\w+)$/.exec(filename);
             const type = match ? `image/${match[1]}` : `image/jpeg`;

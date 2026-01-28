@@ -627,7 +627,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.primary,
     },
     headerTitle: {
-        fontSize: 18,
+        fontSize: 24,
         fontFamily: 'Urbanist-Bold',
         color: COLORS.text,
     },
@@ -655,9 +655,9 @@ const styles = StyleSheet.create({
         elevation: 8,
     },
     avatarText: {
-        fontSize: 36,
+        fontSize: 40,
         fontFamily: 'Urbanist-Bold',
-        color: COLORS.white,
+        color: COLORS.primary,
     },
     avatarImage: {
         width: '100%',
@@ -691,14 +691,14 @@ const styles = StyleSheet.create({
         borderColor: COLORS.background,
     },
     userName: {
-        fontSize: 24,
+        fontSize: 28,
         fontFamily: 'Urbanist-Bold',
         color: COLORS.text,
         marginBottom: 4,
     },
     userEmail: {
         fontSize: 16,
-        fontFamily: 'Urbanist-Medium',
+        fontFamily: 'Urbanist-Bold',
         color: COLORS.textSecondary,
     },
     section: {
@@ -706,7 +706,7 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     },
     sectionTitle: {
-        fontSize: 18,
+        fontSize: 22,
         fontFamily: 'Urbanist-Bold',
         color: COLORS.text,
         marginBottom: 16,

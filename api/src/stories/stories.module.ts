@@ -4,8 +4,17 @@ import { StoriesController } from './stories.controller';
 import { PrismaModule } from '../prisma/prisma.module';
 import { CommonModule } from '../common/common.module';
 
+import { MulterModule } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
+
 @Module({
-    imports: [PrismaModule, CommonModule],
+    imports: [
+        PrismaModule,
+        CommonModule,
+        MulterModule.register({
+            storage: memoryStorage(),
+        }),
+    ],
     controllers: [StoriesController],
     providers: [StoriesService],
 })

@@ -18,6 +18,12 @@ export class UsersController {
         @Param('id') id: string,
         @UploadedFile() file: Express.Multer.File
     ) {
+        console.log('[UsersController] uploadProfilePicture for:', id);
+        console.log('[UsersController] File data:', file ? {
+            originalname: file.originalname,
+            size: file.size,
+            mimetype: file.mimetype
+        } : 'UNDEFINED');
         return this.usersService.updateProfilePicture(id, file);
     }
 }

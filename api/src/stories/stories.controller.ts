@@ -14,8 +14,13 @@ export class StoriesController {
     @Post('upload')
     @UseInterceptors(FileInterceptor('file'))
     async uploadImage(@UploadedFile() file: Express.Multer.File) {
-        console.log('[StoriesController] uploadImage called');
-        console.log('[StoriesController] File:', file ? 'Received' : 'Undefined');
+        console.log('[StoriesController] uploadImage called at:', new Date().toISOString());
+        console.log('[StoriesController] File data:', file ? {
+            originalname: file.originalname,
+            size: file.size,
+            mimetype: file.mimetype
+        } : 'UNDEFINED');
+
         if (!file) {
             throw new Error('No file uploaded');
         }

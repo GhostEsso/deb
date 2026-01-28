@@ -27,6 +27,11 @@ export const StoryBar = () => {
         useCallback(() => {
             fetchStories();
             loadSeenStories();
+
+            // Refresh stories every 30 seconds to show new ones immediately
+            const interval = setInterval(fetchStories, 30000);
+
+            return () => clearInterval(interval);
         }, [])
     );
 

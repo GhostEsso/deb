@@ -627,8 +627,9 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.primary,
     },
     headerTitle: {
-        fontSize: 24,
+        fontSize: 26,
         fontFamily: 'Urbanist-Bold',
+        fontWeight: 'bold',
         color: COLORS.text,
     },
     content: {
@@ -691,14 +692,16 @@ const styles = StyleSheet.create({
         borderColor: COLORS.background,
     },
     userName: {
-        fontSize: 28,
+        fontSize: 30,
         fontFamily: 'Urbanist-Bold',
+        fontWeight: 'bold',
         color: COLORS.text,
         marginBottom: 4,
     },
     userEmail: {
         fontSize: 16,
         fontFamily: 'Urbanist-Bold',
+        fontWeight: 'bold',
         color: COLORS.textSecondary,
     },
     section: {
@@ -706,8 +709,9 @@ const styles = StyleSheet.create({
         marginBottom: 24,
     },
     sectionTitle: {
-        fontSize: 22,
+        fontSize: 24,
         fontFamily: 'Urbanist-Bold',
+        fontWeight: 'bold',
         color: COLORS.text,
         marginBottom: 16,
     },

@@ -98,6 +98,16 @@ export class BookingsService {
                 take: limit,
                 include: {
                     service: true,
+                    user: {
+                        select: {
+                            id: true,
+                            firstName: true,
+                            lastName: true,
+                            email: true,
+                            phoneNumber: true,
+                            profilePictureUrl: true,
+                        }
+                    }
                 },
                 orderBy: {
                     date: 'asc',
@@ -133,6 +143,7 @@ export class BookingsService {
                             lastName: true,
                             email: true,
                             phoneNumber: true,
+                            profilePictureUrl: true,
                         }
                     }
                 },
@@ -176,6 +187,8 @@ export class BookingsService {
                         lastName: true,
                         email: true,
                         pushToken: true,
+                        phoneNumber: true,
+                        profilePictureUrl: true,
                     }
                 }
             }

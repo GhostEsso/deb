@@ -240,6 +240,10 @@ export const ProfileScreen = ({ navigation }: any) => {
 
     return (
         <View style={styles.container}>
+            <LinearGradient
+                colors={[COLORS.secondary, COLORS.white]}
+                style={StyleSheet.absoluteFill}
+            />
             <SafeAreaView style={styles.safeArea}>
                 {/* Header */}
                 <View style={styles.header}>
@@ -247,16 +251,23 @@ export const ProfileScreen = ({ navigation }: any) => {
                         <ChevronLeft size={22} color={COLORS.text} />
                     </TouchableOpacity>
                     <Text style={styles.headerTitle}>Mon Profil</Text>
-                    <TouchableOpacity
-                        style={[styles.circleButton, isEditing && styles.saveButtonActive]}
-                        onPress={() => isEditing ? handleUpdateProfile() : setIsEditing(true)}
-                    >
+                    <View style={{ width: 44 }}>
                         {isEditing ? (
-                            <Save size={20} color={COLORS.white} />
+                            <TouchableOpacity
+                                style={[styles.circleButton, styles.saveButtonActive]}
+                                onPress={handleUpdateProfile}
+                            >
+                                <Save size={20} color={COLORS.white} />
+                            </TouchableOpacity>
                         ) : (
-                            <Edit2 size={20} color={COLORS.text} />
+                            <TouchableOpacity
+                                style={styles.circleButton}
+                                onPress={() => setIsEditing(true)}
+                            >
+                                <Edit2 size={20} color={COLORS.text} />
+                            </TouchableOpacity>
                         )}
-                    </TouchableOpacity>
+                    </View>
                 </View>
 
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
@@ -574,15 +585,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 24,
         paddingVertical: 12,
-        backgroundColor: COLORS.background,
     },
     circleButton: {
         width: 44,
         height: 44,
         borderRadius: 22,
-        backgroundColor: '#F5F5F5',
+        backgroundColor: COLORS.white,
         justifyContent: 'center',
         alignItems: 'center',
+        borderWidth: 1,
+        borderColor: '#F0F0F0',
     },
     saveButtonActive: {
         backgroundColor: COLORS.primary,
@@ -600,16 +612,18 @@ const styles = StyleSheet.create({
         marginVertical: 24,
     },
     avatarContainer: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        backgroundColor: COLORS.primary,
+        width: 110,
+        height: 110,
+        borderRadius: 55,
+        backgroundColor: COLORS.white,
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 16,
-        shadowColor: COLORS.primary,
+        borderWidth: 4,
+        borderColor: COLORS.white,
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 8 },
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.1,
         shadowRadius: 12,
         elevation: 8,
     },
@@ -682,12 +696,12 @@ const styles = StyleSheet.create({
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        height: 52,
+        height: 56,
         backgroundColor: COLORS.white,
-        borderRadius: 12,
+        borderRadius: 16,
         paddingHorizontal: 16,
         borderWidth: 1,
-        borderColor: '#E8E8E8',
+        borderColor: '#F0F0F0',
     },
     disabledInput: {
         backgroundColor: '#F9F9F9',
@@ -705,10 +719,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 16,
-        backgroundColor: COLORS.secondary,
-        borderRadius: 12,
+        backgroundColor: COLORS.white,
+        borderRadius: 16,
         marginTop: 8,
         gap: 8,
+        borderWidth: 1,
+        borderColor: '#F0F0F0',
     },
     changePasswordText: {
         fontSize: 14,

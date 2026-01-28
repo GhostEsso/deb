@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert, Dimensions, ActivityIndicator, Platform, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS } from '@/constants/theme';
 import { ChevronLeft, User, Mail, Lock, LogOut, Calendar, Save, Edit2, Loader2, Layout, Plus, Package, Trash2, Image as ImageIcon, Check, XCircle, X, Phone, BarChart3, Camera } from 'lucide-react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -10,7 +11,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useFocusEffect } from '@react-navigation/native';
 
 export const ProfileScreen = ({ navigation }: any) => {
-    const { user, signOut, updateProfile, updateProfilePicture } = useAuth();
+    const { user, setUser, signOut, updateProfile } = useAuth();
     const [isEditing, setIsEditing] = useState(false);
     const [uploadingImage, setUploadingImage] = useState(false);
     const [bookings, setBookings] = useState<any[]>([]);
@@ -135,12 +136,19 @@ export const ProfileScreen = ({ navigation }: any) => {
                     throw new Error(errorData.message || `Erreur serveur (${response.status})`);
                 }
 
-                Alert.alert('Succès', 'Photo de profil mise à jour');
+                const uploadRes = await response.json();
+                if (uploadRes.success && uploadRes.user) {
+                    // Update global state and storage immediately
+                    const updatedUser = uploadRes.user;
+                    setUser(updatedUser);
+                    await AsyncStorage.setItem('@nails_user', JSON.stringify(updatedUser));
+                    Alert.alert('Succès', 'Photo de profil mise à jour');
+                } else {
+                    throw new Error('La réponse du serveur ne contient pas les données utilisateur.');
+                }
             } catch (error: any) {
                 const errorMessage = error.message || 'Erreur inconnue';
-                const fullUrl = `${API_URL}/users/${user.id}/profile-picture`;
-                // Version v2.0
-                Alert.alert('Erreur Upload (v2.0)', `Path: ${fullUrl}\n\nÉchec : ${errorMessage}`);
+                Alert.alert('Erreur', `Impossible de mettre à jour la photo : ${errorMessage}`);
             } finally {
                 setUploadingImage(false);
             }

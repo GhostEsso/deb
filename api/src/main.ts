@@ -8,7 +8,11 @@ let cachedApp: any;
 async function bootstrap(): Promise<Express> {
   const server: Express = express();
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
-  app.enableCors();
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
   app.setGlobalPrefix('api/V1');
   await app.init();
   return server;

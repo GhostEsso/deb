@@ -11,7 +11,7 @@ async function bootstrap(): Promise<Express> {
   app.enableCors({
     origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
+    allowedHeaders: 'Content-Type,Accept,Authorization',
   });
   app.setGlobalPrefix('api/V1');
   await app.init();

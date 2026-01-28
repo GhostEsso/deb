@@ -66,7 +66,7 @@ export const StoryBar = () => {
             mediaTypes: 'images',
             allowsEditing: true,
             aspect: [9, 16],
-            quality: 0.8,
+            quality: 0.5,
         });
 
         if (!result.canceled) {

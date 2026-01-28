@@ -110,7 +110,7 @@ export class BookingsService {
                     }
                 },
                 orderBy: {
-                    date: 'asc',
+                    date: 'desc',
                 },
             })
         ]);
@@ -148,7 +148,7 @@ export class BookingsService {
                     }
                 },
                 orderBy: {
-                    date: 'asc',
+                    date: 'desc',
                 },
             })
         ]);

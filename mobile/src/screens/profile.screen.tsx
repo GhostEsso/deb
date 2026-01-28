@@ -5,7 +5,7 @@ import { COLORS } from '@/constants/theme';
 import { ChevronLeft, User, Mail, Lock, LogOut, Calendar, Save, Edit2, Loader2, Layout, Plus, Package, Trash2, Image as ImageIcon, Check, XCircle, X, Phone, BarChart3, Camera } from 'lucide-react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '@/services/auth.context';
-import { bookingsApi, servicesApi } from '@/services/api.service';
+import { usersApi, bookingsApi, servicesApi } from '@/services/api.service';
 import { useFocusEffect } from '@react-navigation/native';
 
 export const ProfileScreen = ({ navigation }: any) => {
@@ -97,6 +97,7 @@ export const ProfileScreen = ({ navigation }: any) => {
     };
 
     const handleSelectProfilePicture = async () => {
+        if (!user) return;
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
             Alert.alert('Permission refusée', 'Nous avons besoin de votre permission pour accéder à vos photos.');
@@ -127,12 +128,16 @@ export const ProfileScreen = ({ navigation }: any) => {
                     type,
                 } as any);
 
-                await updateProfilePicture(formData);
+                const response = await usersApi.nativeUpload(`${user.id}/profile-picture`, formData);
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.message || `Erreur serveur (${response.status})`);
+                }
+
                 Alert.alert('Succès', 'Photo de profil mise à jour');
             } catch (error: any) {
-                const errorMessage = error.response?.data?.message || error.message || 'Erreur inconnue';
-                const statusCode = error.response?.status ? ` (Code: ${error.response.status})` : '';
-                Alert.alert('Erreur Upload (v1.5)', `Échec : ${errorMessage}${statusCode}`);
+                const errorMessage = error.message || 'Erreur inconnue';
+                Alert.alert('Erreur', `Échec de la mise à jour : ${errorMessage}`);
             } finally {
                 setUploadingImage(false);
             }

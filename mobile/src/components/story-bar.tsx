@@ -110,13 +110,12 @@ export const StoryBar = () => {
                 caption: '',
             });
 
-            Alert.alert('Succès', 'Votre story a été publiée !');
+            Alert.alert(`Succès`, `Votre story a été publiée !`);
             fetchStories();
         } catch (error: any) {
             console.error('Error uploading story:', error);
             const errorMessage = error.message || 'Erreur inconnue';
-            // Version v1.8 avec Native Fetch
-            Alert.alert(`Erreur Upload (v1.8)`, `Mode: Native Fetch\n\n${errorMessage}`);
+            Alert.alert(`Erreur`, `Impossible de publier la story : ${errorMessage}`);
         } finally {
             setUploading(false);
         }

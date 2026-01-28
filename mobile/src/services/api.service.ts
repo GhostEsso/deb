@@ -43,6 +43,15 @@ export const authApi = {
 export const usersApi = {
     updateProfile: (id: string, data: any) => api.patch(`users/${id}`, data),
     uploadProfilePicture: (id: string, formData: FormData) => api.post(`users/${id}/profile-picture`, formData),
+    nativeUpload: async (endpoint: string, formData: FormData) => {
+        return fetch(`${normalizedBaseURL}users/${endpoint}`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json',
+            },
+        });
+    },
 };
 
 export const bookingsApi = {

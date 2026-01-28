@@ -518,6 +518,24 @@ export const ProfileScreen = ({ navigation }: any) => {
                                             )}
                                         </View>
 
+                                        {isAdmin && booking.user && (
+                                            <View style={styles.clientBookingAvatarWrapper}>
+                                                {booking.user.profilePictureUrl ? (
+                                                    <Image
+                                                        source={{ uri: booking.user.profilePictureUrl }}
+                                                        style={styles.clientBookingAvatar}
+                                                    />
+                                                ) : (
+                                                    <View style={styles.clientBookingAvatarPlaceholder}>
+                                                        <Text style={styles.clientBookingAvatarText}>
+                                                            {booking.user.firstName?.charAt(0).toUpperCase()}
+                                                            {booking.user.lastName?.charAt(0).toUpperCase()}
+                                                        </Text>
+                                                    </View>
+                                                )}
+                                            </View>
+                                        )}
+
                                         {isAdmin && (
                                             <View style={styles.adminBookingActions}>
                                                 {booking.status === 'PENDING' && (
@@ -826,7 +844,29 @@ const styles = StyleSheet.create({
         color: COLORS.textSecondary,
     },
     adminBookingActions: {
-        marginLeft: 16,
+        marginLeft: 12,
+    },
+    clientBookingAvatarWrapper: {
+        marginLeft: 12,
+    },
+    clientBookingAvatar: {
+        width: 44,
+        height: 44,
+        borderRadius: 22,
+        backgroundColor: '#F5F5F5',
+    },
+    clientBookingAvatarPlaceholder: {
+        width: 44,
+        height: 44,
+        borderRadius: 22,
+        backgroundColor: COLORS.secondary,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    clientBookingAvatarText: {
+        fontSize: 14,
+        fontFamily: 'Urbanist-Bold',
+        color: COLORS.primary,
     },
     actionRow: {
         flexDirection: 'row',

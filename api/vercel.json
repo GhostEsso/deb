@@ -8,6 +8,28 @@
     ],
     "routes": [
         {
+            "src": "/api/V1/stories/upload",
+            "dest": "src/main.ts",
+            "methods": [
+                "POST",
+                "OPTIONS"
+            ],
+            "config": {
+                "maxDuration": 20
+            }
+        },
+        {
+            "src": "/api/V1/users/(.*)/profile-picture",
+            "dest": "src/main.ts",
+            "methods": [
+                "POST",
+                "OPTIONS"
+            ],
+            "config": {
+                "maxDuration": 20
+            }
+        },
+        {
             "src": "/(.*)",
             "dest": "src/main.ts",
             "methods": [

@@ -129,7 +129,9 @@ export const ProfileScreen = ({ navigation }: any) => {
                 await updateProfilePicture(formData);
                 Alert.alert('Succès', 'Photo de profil mise à jour');
             } catch (error: any) {
-                Alert.alert('Erreur', error.message);
+                const errorMessage = error.response?.data?.message || error.message || 'Erreur inconnue';
+                const statusCode = error.response?.status ? ` (Code: ${error.response.status})` : '';
+                Alert.alert('Erreur', `Échec de l'upload : ${errorMessage}${statusCode}`);
             } finally {
                 setUploadingImage(false);
             }

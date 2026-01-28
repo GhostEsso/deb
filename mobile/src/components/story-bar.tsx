@@ -104,7 +104,9 @@ export const StoryBar = () => {
             fetchStories();
         } catch (error: any) {
             console.error('Error uploading story:', error);
-            Alert.alert('Erreur', 'Impossible de publier la story.');
+            const errorMessage = error.response?.data?.message || error.message || 'Erreur inconnue';
+            const statusCode = error.response?.status ? ` (Code: ${error.response.status})` : '';
+            Alert.alert('Erreur', `Impossible de publier la story : ${errorMessage}${statusCode}`);
         } finally {
             setUploading(false);
         }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Modal, Dimensions, ActivityIndicator, Alert, Platform, Pressable } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Modal, Dimensions, ActivityIndicator, Alert, Platform, Pressable, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { storiesApi, API_URL } from '@/services/api.service';
 import { COLORS, FONTS } from '@/constants/theme';
@@ -182,6 +182,13 @@ export const StoryBar = () => {
 
     return (
         <View style={styles.container}>
+            <StatusBar
+                hidden={modalVisible}
+                backgroundColor="transparent"
+                translucent
+                barStyle="light-content"
+                animated
+            />
             <FlatList
                 data={stories}
                 horizontal
@@ -239,6 +246,7 @@ export const StoryBar = () => {
                 visible={modalVisible}
                 transparent={false}
                 animationType="fade"
+                statusBarTranslucent
                 onRequestClose={() => setModalVisible(false)}
             >
                 <View style={styles.modalContainer}>

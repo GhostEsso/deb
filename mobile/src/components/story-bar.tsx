@@ -94,8 +94,14 @@ export const StoryBar = () => {
                 type: type,
             } as any);
 
-            const uploadRes = await storiesApi.uploadImage(formData);
-            const { url, publicId } = uploadRes.data;
+            const response = await storiesApi.nativeUpload('stories/upload', formData);
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `Erreur serveur (${response.status})`);
+            }
+
+            const uploadRes = await response.json();
+            const { url, publicId } = uploadRes;
 
             await storiesApi.create({
                 imageUrl: url,
@@ -108,12 +114,9 @@ export const StoryBar = () => {
             fetchStories();
         } catch (error: any) {
             console.error('Error uploading story:', error);
-            const errorMessage = error.response?.data?.message || error.message || 'Erreur inconnue';
-            const statusCode = error.response?.status ? ` (Code: ${error.response.status})` : '';
-            // Version v1.7 pour vérifier l'API URL globale et locale
-            const fullUrl = `${error.config?.baseURL || ''}${error.config?.url || ''}`;
-            const baseUrlConst = API_URL;
-            Alert.alert(`Erreur Upload (v1.7)`, `BaseURL: ${baseUrlConst}\nFull Path: ${fullUrl}\n\n${errorMessage}${statusCode}`);
+            const errorMessage = error.message || 'Erreur inconnue';
+            // Version v1.8 avec Native Fetch
+            Alert.alert(`Erreur Upload (v1.8)`, `Mode: Native Fetch\n\n${errorMessage}`);
         } finally {
             setUploading(false);
         }

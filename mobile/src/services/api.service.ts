@@ -66,5 +66,15 @@ export const storiesApi = {
     getAll: () => api.get('stories'),
     create: (data: any) => api.post('stories', data),
     uploadImage: (formData: FormData) => api.post('stories/upload', formData),
+    // Alternative stable pour Android physique
+    nativeUpload: async (endpoint: string, formData: FormData) => {
+        return fetch(`${normalizedBaseURL}${endpoint}`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json',
+            },
+        });
+    },
     delete: (id: string) => api.delete(`stories/${id}`),
 };

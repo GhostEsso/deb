@@ -5,7 +5,7 @@ import { COLORS } from '@/constants/theme';
 import { ChevronLeft, User, Mail, Lock, LogOut, Calendar, Save, Edit2, Loader2, Layout, Plus, Package, Trash2, Image as ImageIcon, Check, XCircle, X, Phone, BarChart3, Camera } from 'lucide-react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from '@/services/auth.context';
-import { usersApi, bookingsApi, servicesApi } from '@/services/api.service';
+import { usersApi, bookingsApi, servicesApi, API_URL } from '@/services/api.service';
 import { useFocusEffect } from '@react-navigation/native';
 
 export const ProfileScreen = ({ navigation }: any) => {
@@ -137,7 +137,9 @@ export const ProfileScreen = ({ navigation }: any) => {
                 Alert.alert('Succès', 'Photo de profil mise à jour');
             } catch (error: any) {
                 const errorMessage = error.message || 'Erreur inconnue';
-                Alert.alert('Erreur', `Échec de la mise à jour : ${errorMessage}`);
+                const fullUrl = `${API_URL}/users/${user.id}/profile-picture`;
+                // Version v2.0
+                Alert.alert('Erreur Upload (v2.0)', `Path: ${fullUrl}\n\nÉchec : ${errorMessage}`);
             } finally {
                 setUploadingImage(false);
             }

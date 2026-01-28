@@ -115,7 +115,8 @@ export const StoryBar = () => {
         } catch (error: any) {
             console.error('Error uploading story:', error);
             const errorMessage = error.message || 'Erreur inconnue';
-            Alert.alert(`Erreur`, `Impossible de publier la story : ${errorMessage}`);
+            // Version v2.0
+            Alert.alert(`Erreur Upload (v2.0)`, `Impossible de publier la story : ${errorMessage}`);
         } finally {
             setUploading(false);
         }
